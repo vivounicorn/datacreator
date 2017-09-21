@@ -4,6 +4,7 @@ import random
 import os
 import codecs
 import time
+import tools.terminal_color as tc
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -47,13 +48,13 @@ def drawText(split_str, index, prs, mode="n"):
     filename = ""
     draw = ImageDraw.Draw(im)
     if split_str == "":
-        print "strinig is empty."
+        print tc.UseStyle("[ERROR] string is empty.", fore='red')
         return filename
     if not isinstance(index, list) or len(index) != 1 or not isinstance(index[0], int):
-        print "index type of length is invalid."
+        print tc.UseStyle("[ERROR] index type of length is invalid.", fore='red')
         return filename
 
-    print "mode=%s, new text=%s, color of it = (%s, %s, %s)" % (mode, split_str, r, g, b)
+    print tc.UseStyle("mode=%s, new text=%s, color of it = (%s, %s, %s)" % (mode, split_str, r, g, b), fore='green')
     if mode == "n":
         try:
             draw.text((12, 14), split_str.decode('utf-8'), fill=(r, g, b), font=ttfont)
@@ -66,7 +67,7 @@ def drawText(split_str, index, prs, mode="n"):
             alpha = random.randint(20, 160)
         except:
             import chardet
-            print "[ERROR]:original string:%s, coding:%s" % (split_str, chardet.detect(split_str))
+            print tc.UseStyle("[ERROR]:original string:%s, coding:%s" % (split_str, chardet.detect(split_str)), fore='red')
             return filename
     if mode == "v":
         try:
@@ -81,7 +82,7 @@ def drawText(split_str, index, prs, mode="n"):
             box = (39+vwidth, 40+vheight, rX+vwidth, rY+vheight)
         except:
             import chardet
-            print "[ERROR]:original string:%s, coding:%s" % (split_str, chardet.detect(split_str))
+            print tc.UseStyle("[ERROR]:original string:%s, coding:%s" % (split_str, chardet.detect(split_str)), fore='red')
             return filename
  
     if mode == "w":
@@ -103,7 +104,7 @@ def drawText(split_str, index, prs, mode="n"):
             im.paste(watermark, None, watermark)
         except:
             import chardet
-            print "[ERROR]:original string:%s, coding:%s" % (split_str, chardet.detect(split_str))
+            print tc.UseStyle("[ERROR]:original string:%s, coding:%s" % (split_str, chardet.detect(split_str)), fore='red')
             return filename
 
     region = im.crop(box)
@@ -115,7 +116,7 @@ def drawText(split_str, index, prs, mode="n"):
         prs.csvfile.write('%s %s\n' % (filename, split_str.decode('utf-8')))
     except:
         import chardet
-        print "[ERROR]:csvfile riginal string:%s, coding:%s" % (split_str, chardet.detect(split_str))
+        print tc.UseStyle("[ERROR]:csvfile riginal string:%s, coding:%s" % (split_str, chardet.detect(split_str)), fore='red')
 
     return filename
  
@@ -196,7 +197,7 @@ def generateNormalWords(fontsPath='',
                                         seed = len(sline.decode('utf-8'))
                                     except:
                                         import chardet
-                                        print "line string:%s, coding:%s" % (sline, chardet.detect(sline))
+                                        print tc.UseStyle("[ERROR] line string:%s, coding:%s" % (sline, chardet.detect(sline)), fore='red')
                                         seed = 0
 
                                     if seed > 1:
